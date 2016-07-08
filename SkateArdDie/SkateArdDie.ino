@@ -183,7 +183,7 @@ void buildLevel(){
       //level 2
       if(CURRENT_LEVEL == 2){
         //level length
-        LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 90;
+        LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 45;
         
         arduboy.drawBitmap(0,BG_SCROLL,the_level2_sl, 32, 80, WHITE);        
         arduboy.drawBitmap(96,BG_SCROLL,the_level2_sr, 32, 80, WHITE);
