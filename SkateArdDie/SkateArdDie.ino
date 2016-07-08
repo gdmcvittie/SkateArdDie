@@ -43,6 +43,7 @@ bool BOSS_TIME = false;
 
 //score
 int SCORE = 0;
+int PRAISE_COUNT = 60;
 bool NEEDS_PRAISE = false;
 bool NEEDS_HEART = false;
 bool NEEDS_LIFE = false;
