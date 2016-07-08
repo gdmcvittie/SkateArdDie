@@ -105,7 +105,7 @@ bool ON_PLATFORM = false;
 
 //seconds played
 int SECS_PLAYED = 0;
-int LEVEL_LENGTH = 45;
+int LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 60;
 
 //scroll amount for background
 int BG_SCROLL = 0;
@@ -167,9 +167,6 @@ void buildLevel(){
 
       //level 1
       if(CURRENT_LEVEL == 1){
-        //level length
-        LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 60;
-
         if(BOSS_TIME){
           bossTime();         
         }
@@ -181,10 +178,7 @@ void buildLevel(){
       }
       
       //level 2
-      if(CURRENT_LEVEL == 2){
-        //level length
-        LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 45;
-        
+      if(CURRENT_LEVEL == 2){        
         arduboy.drawBitmap(0,BG_SCROLL,the_level2_sl, 32, 80, WHITE);        
         arduboy.drawBitmap(96,BG_SCROLL,the_level2_sr, 32, 80, WHITE);
         for(int i=32; i<96; i=i+8){
