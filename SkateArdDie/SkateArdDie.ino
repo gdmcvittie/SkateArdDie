@@ -109,7 +109,7 @@ bool ON_PLATFORM = false;
 
 //seconds played
 int SECS_PLAYED = 0;
-int LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 60;
+int LEVEL_LENGTH = 45;
 
 //scroll amount for background
 int BG_SCROLL = 0;
@@ -325,7 +325,11 @@ void buildLevel(){
       arduboy.setCursor(62,28);
       arduboy.print(SCORE);
       arduboy.setCursor(68,55);
-      arduboy.print("CONTINUE >");
+      if(CURRENT_LEVEL==1){
+        arduboy.print("CONTINUE >");
+      } else {
+        arduboy.print("AGAIN >");     
+      }
       //handle button inputs
       handleButtons();  
       arduboy.display();
@@ -565,7 +569,10 @@ void handleButtons(){
         if(CURRENT_LEVEL==1){
           BOSS_HEALTH = 6;
           CURRENT_LEVEL = 2;
-        }                      
+        }else if(CURRENT_LEVEL==2){
+           resetGame();   
+           delay(500);                   
+        }
         return;
      }
   }
@@ -842,7 +849,7 @@ void collision(){
               if(SOUND_ENABLED){
                 soundGood();
               }
-              WHICH_PRAISE = random(0,3);
+              WHICH_PRAISE = random(0,4);
             }
             addToScore();
             return;
@@ -856,7 +863,7 @@ void collision(){
               if(SOUND_ENABLED){
                 soundGood();
               }
-              WHICH_PRAISE = random(0,3);
+              WHICH_PRAISE = random(0,4);
             }
             addToScore();
             return;
@@ -1119,7 +1126,7 @@ void doLevel2OneUps(){
   if(MOVING_DOWN){
     if( arduboy.everyXFrames(2) ){
       if(ONEUP_Y2 <= -8){
-        ONEUP_Y2 = random(70,150);
+        ONEUP_Y2 = random(64,100);
         ONEUP_X2 = random(30,70);
       }
       ONEUP_Y2--;
