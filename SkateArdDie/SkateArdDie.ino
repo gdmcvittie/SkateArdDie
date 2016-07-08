@@ -43,11 +43,7 @@ bool BOSS_TIME = false;
 
 //score
 int SCORE = 0;
-<<<<<<< HEAD
 int PRAISE_COUNT = 60;
-=======
-int PRAISE_COUNT = 120;
->>>>>>> origin/master
 bool NEEDS_PRAISE = false;
 bool NEEDS_HEART = false;
 bool NEEDS_LIFE = false;
@@ -1229,11 +1225,7 @@ void doBosses(){
         BOSS_X = random(12,96);     
       }
       sprites.draw(BOSS_X,BOSS_Y,the_boss1_f1,bossframe,the_boss1_f1_mask,bossframe);
-<<<<<<< HEAD
       if(arduboy.everyXFrames(20)){
-=======
-      if(arduboy.everyXFrames(30)){
->>>>>>> origin/master
         if(BOSS_HIT){
           if(BOSS_HEALTH>0){
             BOSS_HEALTH--;
