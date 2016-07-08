@@ -31,7 +31,7 @@ int DING_EVERY_X_FRAMES = 120;
 
 //boss
 int BOSS_HEALTH = 9;
-bool BOSS_HIT = false;
+int BOSS_HIT = false;
 int BOSS_X = 86;
 int BOSS_Y = 16;
 int BALL_X = 86;
@@ -43,7 +43,6 @@ bool BOSS_TIME = false;
 
 //score
 int SCORE = 0;
-int PRAISE_COUNT = 255;
 bool NEEDS_PRAISE = false;
 bool NEEDS_HEART = false;
 bool NEEDS_LIFE = false;
@@ -168,6 +167,8 @@ void buildLevel(){
 
       //level 1
       if(CURRENT_LEVEL == 1){
+		//level length
+        LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 60;
         if(BOSS_TIME){
           bossTime();         
         }
@@ -179,7 +180,9 @@ void buildLevel(){
       }
       
       //level 2
-      if(CURRENT_LEVEL == 2){        
+      if(CURRENT_LEVEL == 2){      
+		//level length
+        LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 90;	  
         arduboy.drawBitmap(0,BG_SCROLL,the_level2_sl, 32, 80, WHITE);        
         arduboy.drawBitmap(96,BG_SCROLL,the_level2_sr, 32, 80, WHITE);
         for(int i=32; i<96; i=i+8){
@@ -594,7 +597,7 @@ void handleButtons(){
  */
 void addPlayer(bool white){
   if(MOVING && arduboy.everyXFrames(10) && SOUND_ENABLED){
-    soundSkate();
+    soundGrind();
   }
   
   int frame = 0;
@@ -1221,7 +1224,7 @@ void doBosses(){
         BOSS_X = random(12,96);     
       }
       sprites.draw(BOSS_X,BOSS_Y,the_boss1_f1,bossframe,the_boss1_f1_mask,bossframe);
-      if(arduboy.everyXFrames(255)){
+      if(arduboy.everyXFrames(20)){
         if(BOSS_HIT){
           if(BOSS_HEALTH>0){
             BOSS_HEALTH--;
