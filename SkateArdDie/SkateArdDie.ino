@@ -2,19 +2,14 @@
  * Grant D. McVittie
  * PixelPlatforms
  */
-#include <ArduboyExtra.h>
-#include <physics.h>
-#include <sprites.h>
-
-#include <Arduboy.h>
-
+#include <Arduboy2.h>
+#include <ArduboyTones.h>
+#include "sprites.h"
 #include "bitmaps.h"
 
-Arduboy arduboy;
-
-#include "audio.h"
-
-Sprites sprites(arduboy);
+Arduboy2 arduboy;
+ArduboyTones sound(arduboy.audio.enabled);
+Sprites sprites(arduboy.getBuffer());
 
 /*
  * game variables
@@ -120,7 +115,9 @@ bool SOUND_PLAYED = false;
  
 
 void setup() {
-  arduboy.beginNoLogo();
+  arduboy.boot();
+  arduboy.systemButtons();
+  arduboy.audio.begin();
   arduboy.setFrameRate(60); 
 }
 
@@ -1040,12 +1037,12 @@ void doRails(){
 }
 //benches
 void doBenches(){
-  if(MOVING && arduboy.everyXFrames(1) ){
+//  if(MOVING && arduboy.everyXFrames(1) ){
     if(BENCH_X == -16){
       BENCH_X = random(200,600);
     }
     BENCH_X--;
-  }
+//  }
   arduboy.drawBitmap(BENCH_X,BENCH_Y,the_bench,16,8,BLACK);
   return;
 }
@@ -1137,26 +1134,26 @@ void doLevel2OneUps(){
 }
 //sodas
 void doSodas(){
-  if( arduboy.everyXFrames(1) ){
+//  if( arduboy.everyXFrames(1) ){
     if(SODA_X == -16){
       SODA_X = random(200,400);
       SODA_Y = random(12,20);
     }
     SODA_X--;
-  }    
+//  }    
   arduboy.drawSlowXYBitmap(SODA_X,SODA_Y,the_soda,8,8,BLACK);
   return;
 }
 //level 2 sodas
 void doLevel2Sodas(){
   if(MOVING_DOWN){
-    if( arduboy.everyXFrames(1) ){
+//    if( arduboy.everyXFrames(1) ){
       if(SODA_Y2 <= -8){
         SODA_Y2 = random(70,150);
         SODA_X2 = random(30,70);
       }
       SODA_Y2--;
-    }
+//    }
   }    
   arduboy.drawSlowXYBitmap(SODA_X2,SODA_Y2,the_soda,8,8,BLACK); 
   return;
@@ -1224,7 +1221,7 @@ void doBosses(){
         BOSS_X = random(12,96);     
       }
       sprites.draw(BOSS_X,BOSS_Y,the_boss1_f1,bossframe,the_boss1_f1_mask,bossframe);
-      if(arduboy.everyXFrames(300)){
+      if(arduboy.everyXFrames(255)){
         if(BOSS_HIT){
           if(BOSS_HEALTH>0){
             BOSS_HEALTH--;
