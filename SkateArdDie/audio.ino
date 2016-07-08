@@ -32,7 +32,7 @@ void soundGood(){
  * skate
  */
 void soundSkate(){
-  sound.tone(10, 50);
+  sound.tone(25, 25);
 }
 
 /*
