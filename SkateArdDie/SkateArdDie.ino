@@ -594,7 +594,7 @@ void handleButtons(){
  */
 void addPlayer(bool white){
   if(MOVING && arduboy.everyXFrames(10) && SOUND_ENABLED){
-    soundSkate();
+    soundGrind();
   }
   
   int frame = 0;

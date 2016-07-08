@@ -28,12 +28,6 @@ void soundGood(){
   sound.tone(400, 400);
 }
 
-/*
- * skate
- */
-void soundSkate(){
-  sound.tone(25, 25);
-}
 
 /*
  * grind

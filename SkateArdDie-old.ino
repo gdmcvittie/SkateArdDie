@@ -36,7 +36,7 @@ int DING_EVERY_X_FRAMES = 120;
 
 //boss
 int BOSS_HEALTH = 9;
-int BOSS_HIT = false;
+bool BOSS_HIT = false;
 int BOSS_X = 86;
 int BOSS_Y = 16;
 int BALL_X = 86;
@@ -48,7 +48,7 @@ bool BOSS_TIME = false;
 
 //score
 int SCORE = 0;
-int PRAISE_COUNT = 300;
+int PRAISE_COUNT = 255;
 bool NEEDS_PRAISE = false;
 bool NEEDS_HEART = false;
 bool NEEDS_LIFE = false;
@@ -1040,7 +1040,7 @@ void doRails(){
 }
 //benches
 void doBenches(){
-  if(MOVING && arduboy.everyXFrames(1) ){
+  if(MOVING){
     if(BENCH_X == -16){
       BENCH_X = random(200,600);
     }
@@ -1137,26 +1137,26 @@ void doLevel2OneUps(){
 }
 //sodas
 void doSodas(){
-  if( arduboy.everyXFrames(1) ){
+
     if(SODA_X == -16){
       SODA_X = random(200,400);
       SODA_Y = random(12,20);
     }
     SODA_X--;
-  }    
+
   arduboy.drawSlowXYBitmap(SODA_X,SODA_Y,the_soda,8,8,BLACK);
   return;
 }
 //level 2 sodas
 void doLevel2Sodas(){
   if(MOVING_DOWN){
-    if( arduboy.everyXFrames(1) ){
+
       if(SODA_Y2 <= -8){
         SODA_Y2 = random(70,150);
         SODA_X2 = random(30,70);
       }
       SODA_Y2--;
-    }
+    
   }    
   arduboy.drawSlowXYBitmap(SODA_X2,SODA_Y2,the_soda,8,8,BLACK); 
   return;
@@ -1224,7 +1224,7 @@ void doBosses(){
         BOSS_X = random(12,96);     
       }
       sprites.draw(BOSS_X,BOSS_Y,the_boss1_f1,bossframe,the_boss1_f1_mask,bossframe);
-      if(arduboy.everyXFrames(300)){
+      if(arduboy.everyXFrames(255)){
         if(BOSS_HIT){
           if(BOSS_HEALTH>0){
             BOSS_HEALTH--;
