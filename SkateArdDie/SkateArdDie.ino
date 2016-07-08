@@ -146,7 +146,7 @@ void buildLevel(){
     arduboy.clear();
     arduboy.drawSlowXYBitmap(0,0,the_intro, 128, 64, WHITE);
     if(SOUND_ENABLED){   
-      trace("SOUND ON"); 
+      trace("SOUND ON");
       if(!SOUND_PLAYED){
         soundGood();
         SOUND_PLAYED = true;
