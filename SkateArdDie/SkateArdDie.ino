@@ -1,3 +1,7 @@
+/*
+ * Grant D. McVittie
+ * PixelPlatforms
+ */
 #include <ArduboyExtra.h>
 #include <physics.h>
 #include <sprites.h>
