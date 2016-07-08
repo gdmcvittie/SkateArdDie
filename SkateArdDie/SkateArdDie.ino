@@ -31,7 +31,7 @@ int DING_EVERY_X_FRAMES = 120;
 
 //boss
 int BOSS_HEALTH = 9;
-int BOSS_HIT = false;
+bool BOSS_HIT = false;
 int BOSS_X = 86;
 int BOSS_Y = 16;
 int BALL_X = 86;
@@ -43,7 +43,7 @@ bool BOSS_TIME = false;
 
 //score
 int SCORE = 0;
-int PRAISE_COUNT = 300;
+int PRAISE_COUNT = 255;
 bool NEEDS_PRAISE = false;
 bool NEEDS_HEART = false;
 bool NEEDS_LIFE = false;
@@ -1037,12 +1037,12 @@ void doRails(){
 }
 //benches
 void doBenches(){
-//  if(MOVING && arduboy.everyXFrames(1) ){
+  if(MOVING){
     if(BENCH_X == -16){
-      BENCH_X = random(200,600);
+     BENCH_X = random(200,600);
     }
     BENCH_X--;
-//  }
+  }
   arduboy.drawBitmap(BENCH_X,BENCH_Y,the_bench,16,8,BLACK);
   return;
 }
