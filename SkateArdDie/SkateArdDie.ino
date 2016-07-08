@@ -168,7 +168,7 @@ void buildLevel(){
 
       //level 1
       if(CURRENT_LEVEL == 1){
-		//level length
+		    //level length
         LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 60;
         if(BOSS_TIME){
           bossTime();         
@@ -182,7 +182,7 @@ void buildLevel(){
       
       //level 2
       if(CURRENT_LEVEL == 2){      
-		//level length
+		    //level length
         LEVEL_LENGTH = (DING_EVERY_X_FRAMES * 20) / 90;	  
         arduboy.drawBitmap(0,BG_SCROLL,the_level2_sl, 32, 80, WHITE);        
         arduboy.drawBitmap(96,BG_SCROLL,the_level2_sr, 32, 80, WHITE);
@@ -1225,7 +1225,7 @@ void doBosses(){
         BOSS_X = random(12,96);     
       }
       sprites.draw(BOSS_X,BOSS_Y,the_boss1_f1,bossframe,the_boss1_f1_mask,bossframe);
-      if(arduboy.everyXFrames(20)){
+      if(arduboy.everyXFrames(30)){
         if(BOSS_HIT){
           if(BOSS_HEALTH>0){
             BOSS_HEALTH--;
@@ -1332,10 +1332,19 @@ void bossTime(){
     BG_SCROLL = BG_SCROLL-4;    
   }else{
     BOSS_TIME = false;
-    GAME_STATE = 3;
+    //get goodies off the screen for boss fight
+    TRASHCAN_X = random(90,126);
+    BENCH_X = random(128,256);
+    RAIL_X = random(300,400);
+    ROCK_X = random(300,500);
+    SPIKES_X = random(600,900);
+    ONEUP_X = random(600,800);
+    SODA_X = random(400,600);
+    
     OLLYING = true;
     OLLIE_Y = -16;       
-    PLAYER_X = 8;            
+    PLAYER_X = 8;
+    GAME_STATE = 3;         
   } 
   return;
 }
