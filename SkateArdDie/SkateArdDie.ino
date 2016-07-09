@@ -420,6 +420,7 @@ void handleButtons(){
       } else {
         SOUND_ENABLED = true;      
       }
+      delay(50);
     }
     if ( arduboy.pressed(B_BUTTON) ){
       SOUND_PLAYED = false;
