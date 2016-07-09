@@ -417,8 +417,10 @@ void handleButtons(){
     if(arduboy.pressed(A_BUTTON) ){
       if(SOUND_ENABLED){
         SOUND_ENABLED = false;
+        arduboy.audio.off();
       } else {
-        SOUND_ENABLED = true;      
+        SOUND_ENABLED = true;  
+        arduboy.audio.on();    
       }
       delay(50);
     }
