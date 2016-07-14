@@ -1,6 +1,8 @@
 /*
  * Grant D. McVittie
  * PixelPlatforms
+ * 
+ * v0.9
  */
 #include <Arduboy2.h>
 #include <ArduboyTones.h>
@@ -67,34 +69,34 @@ int player_y = 40;
 int ollie_y = 8;
 
 //items, goodies, baddies, grindables
-int trashcan_x = random(90,126);
+int trashcan_x = 0;
 int trashcan_y = 39;
-int bench_x = random(128,256);
+int bench_x = 0;
 int bench_y = 48;
-int rail_x = random(300,400);
+int rail_x = 0;
 int rail_y = 48;
 
-int rock_x = random(300,500);
+int rock_x = 0;
 int rock_y = 48;
-int spikes_x = random(600,900);
+int spikes_x = 0;
 int spikes_y = 24;
-int rock_x2 = random(24,86);
-int rock_y2 = random(70,200);
-int pilon_x = random(24,86);
-int pilon_y = random(70,200);
-int spill_x = random(28,75);
-int spill_y = random(70,200);
+int rock_x2 = 0;
+int rock_y2 = 0;
+int pilon_x = 0;
+int pilon_y = 0;
+int spill_x = 0;
+int spill_y = 0;
 int big_spikes_x = 900;
 int big_spikes_y = 8;
 
-int oneup_x = random(600,800);
+int oneup_x = 0;
 int oneup_y = 16;
-int soda_x = random(400,600);
+int soda_x = 0;
 int soda_y = 16;
-int oneup_x2 = random(24,86);
-int oneup_y2 = random(180,360);
-int soda_x2 = random(24,86);
-int soda_y2 = random(120,200);
+int oneup_x2 = 0;
+int oneup_y2 = 0;
+int soda_x2 = 0;
+int soda_y2 = 0;
 
 int platform_x = 36;
 int platform_y = 36;
@@ -119,6 +121,7 @@ void setup() {
   arduboy.systemButtons();
   arduboy.audio.begin();
   arduboy.setFrameRate(60); 
+  resetGame();
 }
 
 void loop() {
