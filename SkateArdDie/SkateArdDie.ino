@@ -30,12 +30,12 @@ int LIVES = 3;
 int DING_EVERY_X_FRAMES = 120;
 
 //boss
-int BOSS_HEALTH = 9;
+int boss_health = 9;
+int boss_x = 86;
+int boss_y = 16;
+int ball_x = 86;
+int ball_y = 46;
 int BOSS_HIT = false;
-int BOSS_X = 86;
-int BOSS_Y = 16;
-int BALL_X = 86;
-int BALL_Y = 46;
 bool BOSS_DOWN = false;
 bool BOSS_FIRED = false;
 bool BOSS_TIME = false;
@@ -62,42 +62,42 @@ bool MOVING_UP = false;
 bool MOVING_DOWN = false;
 
 //positions
-int PLAYER_X = 24;
-int PLAYER_Y = 40;
-int OLLIE_Y = 8;
+int player_x = 24;
+int player_y = 40;
+int ollie_y = 8;
 
 //items, goodies, baddies, grindables
-int TRASHCAN_X = random(90,126);
-int TRASHCAN_Y = 39;
-int BENCH_X = random(128,256);
-int BENCH_Y = 48;
-int RAIL_X = random(300,400);
-int RAIL_Y = 48;
+int trashcan_x = random(90,126);
+int trashcan_y = 39;
+int bench_x = random(128,256);
+int bench_y = 48;
+int rail_x = random(300,400);
+int rail_y = 48;
 
-int ROCK_X = random(300,500);
-int ROCK_Y = 48;
-int SPIKES_X = random(600,900);
-int SPIKES_Y = 24;
-int ROCK_X2 = random(24,86);
-int ROCK_Y2 = random(70,200);
-int PILON_X = random(24,86);
-int PILON_Y = random(70,200);
-int SPILL_X = random(28,75);
-int SPILL_Y = random(70,200);
-int BIG_SPIKES_X = 900;
-int BIG_SPIKES_Y = 8;
+int rock_x = random(300,500);
+int rock_y = 48;
+int spikes_x = random(600,900);
+int spikes_y = 24;
+int rock_x2 = random(24,86);
+int rock_y2 = random(70,200);
+int pilon_x = random(24,86);
+int pilon_y = random(70,200);
+int spill_x = random(28,75);
+int spill_y = random(70,200);
+int big_spikes_x = 900;
+int big_spikes_y = 8;
 
-int ONEUP_X = random(600,800);
-int ONEUP_Y = 16;
-int SODA_X = random(400,600);
-int SODA_Y = 16;
-int ONEUP_X2 = random(24,86);
-int ONEUP_Y2 = random(180,360);
-int SODA_X2 = random(24,86);
-int SODA_Y2 = random(120,200);
+int oneup_x = random(600,800);
+int oneup_y = 16;
+int soda_x = random(400,600);
+int soda_y = 16;
+int oneup_x2 = random(24,86);
+int oneup_y2 = random(180,360);
+int soda_x2 = random(24,86);
+int soda_y2 = random(120,200);
 
-int PLATFORM_X = 36;
-int PLATFORM_Y = 36;
+int platform_x = 36;
+int platform_y = 36;
 bool PLATFORM_OVER = false;
 
 bool ON_PLATFORM = false;
@@ -399,7 +399,7 @@ void addHud(bool incTime, bool incScore){
  * boss health bar
  */
 void addBossHealthBar(){
-  int hbw = BOSS_HEALTH*8;
+  int hbw = boss_health*8;
   int hbx = 127-hbw;
   arduboy.fillRect(hbx,12,hbw,4,1);
 }
@@ -444,16 +444,16 @@ void handleButtons(){
     //level 1
     if(CURRENT_LEVEL == 1){
       //olly
-      if( arduboy.pressed(B_BUTTON) && (PLAYER_Y > 0) && (PLAYER_Y < 32)){
+      if( arduboy.pressed(B_BUTTON) && (player_y > 0) && (player_y < 32)){
         if(!OLLYING){
           OLLYING = true;
           
           if(!CROUCHING){
-            OLLIE_Y = -16;
+            ollie_y = -16;
           } else {
-            OLLIE_Y = 0;
+            ollie_y = 0;
           }        
-          PLAYER_X = 42;
+          player_x = 42;
         }
       }
       //move
@@ -530,12 +530,12 @@ void handleButtons(){
    if(GAME_STATE == 3){
     
     //olly
-    if( arduboy.pressed(B_BUTTON) && (PLAYER_Y > 0) && (PLAYER_Y < 32)){
+    if( arduboy.pressed(B_BUTTON) && (player_y > 0) && (player_y < 32)){
       OLLYING = true;
       if(!CROUCHING){
-        OLLIE_Y = -16;
+        ollie_y = -16;
       } else {
-        OLLIE_Y = 0;
+        ollie_y = 0;
       }        
     }
 
@@ -571,7 +571,7 @@ void handleButtons(){
         GAME_STATE = 2;
         SECS_PLAYED = 0;
         if(CURRENT_LEVEL==1){
-          BOSS_HEALTH = 6;
+          boss_health = 6;
           CURRENT_LEVEL = 2;
         }else if(CURRENT_LEVEL==2){
            resetGame();   
@@ -600,61 +600,55 @@ void handleButtons(){
  * add player
  */
 void addPlayer(bool white){
-  if(MOVING && arduboy.everyXFrames(10) && SOUND_ENABLED){
+  if(MOVING && arduboy.everyXFrames(10)){
     soundGrind();
   }
   
   int frame = 0;
   if(OLLYING){
-    if(OLLIE_Y < PLAYER_Y){
-      OLLIE_Y = OLLIE_Y + 2;      
+    if(ollie_y < player_y){
+      ollie_y = ollie_y + 2;      
       frame = 1;
     }
     
     //only in levels, not bosses
     if(GAME_STATE == 2){
       //on trashcan
-      if((PLAYER_X+16) >= TRASHCAN_X && (PLAYER_X+16) < (TRASHCAN_X+16)){
-        if((OLLIE_Y+32) >= TRASHCAN_Y && (OLLIE_Y+32) < (TRASHCAN_Y+16)){
+      if((player_x+16) >= trashcan_x && (player_x+16) < (trashcan_x+16)){
+        if((ollie_y+32) >= trashcan_y && (ollie_y+32) < (trashcan_y+16)){
           //riding
-          OLLIE_Y = TRASHCAN_Y-32;
+          ollie_y = trashcan_y-32;
           frame = 1;
           WHICH_PRAISE = 1;
           if( MOVING && arduboy.everyXFrames(2) ){
-            if(SOUND_ENABLED){
-              soundGrind();
-            }            
+            soundGrind();          
             addToScore();
           }        
         }
       }
       
       //on bench
-      if((PLAYER_X+16) >= BENCH_X && (PLAYER_X+16) < (BENCH_X+16)){
-        if((OLLIE_Y+32) >= BENCH_Y && (OLLIE_Y+32) < (BENCH_Y+8)){
+      if((player_x+16) >= bench_x && (player_x+16) < (bench_x+16)){
+        if((ollie_y+32) >= bench_y && (ollie_y+32) < (bench_y+8)){
           //riding
-          OLLIE_Y = BENCH_Y-30;
+          ollie_y = bench_y-30;
           frame = 0;
           WHICH_PRAISE = 2;
           if( MOVING && arduboy.everyXFrames(2) ){
-            if(SOUND_ENABLED){
-              soundGrind();
-            }
+            soundGrind();
             addToScore();
           }
         }
       }
       
       //on rail
-      if((PLAYER_X+16) >= RAIL_X && (PLAYER_X+16) < (RAIL_X+48)){
-        if((OLLIE_Y+32) >= RAIL_Y && (OLLIE_Y+32) < (RAIL_Y+8)){
+      if((player_x+16) >= rail_x && (player_x+16) < (rail_x+48)){
+        if((ollie_y+32) >= rail_y && (ollie_y+32) < (rail_y+8)){
           //riding
-          OLLIE_Y = RAIL_Y-30;
+          ollie_y = rail_y-30;
           frame = 1;
           if( MOVING && arduboy.everyXFrames(2) ){
-            if(SOUND_ENABLED){
-              soundGrind();
-            }
+            soundGrind();
             addToScore();
           }
         }
@@ -664,10 +658,10 @@ void addPlayer(bool white){
     //bosses
     if(GAME_STATE==3){
       //on platform
-      if((PLAYER_X+16) >= PLATFORM_X && (PLAYER_X+16) < (PLATFORM_X+32)){
-        if((OLLIE_Y+32) >= PLATFORM_Y && (OLLIE_Y+32) < (PLATFORM_Y+8)){
+      if((player_x+16) >= platform_x && (player_x+16) < (platform_x+32)){
+        if((ollie_y+32) >= platform_y && (ollie_y+32) < (platform_y+8)){
           //on the platform
-          OLLIE_Y = PLATFORM_Y-30;
+          ollie_y = platform_y-30;
           ON_PLATFORM = true;
           frame = 0;
         }
@@ -675,9 +669,9 @@ void addPlayer(bool white){
     }
     
     //finished ollying
-    if(OLLIE_Y >= PLAYER_Y){
+    if(ollie_y >= player_y){
       OLLYING = false;
-      OLLIE_Y = PLAYER_Y;
+      ollie_y = player_y;
       frame = 0;
     }
 
@@ -685,14 +679,14 @@ void addPlayer(bool white){
 
     if(GAME_STATE==2){
       if(CURRENT_LEVEL == 1){
-        if(PLAYER_X>24){
-          PLAYER_X--;
+        if(player_x>24){
+          player_x--;
         }
       }
       
     }
-    PLAYER_Y = 24;
-    OLLIE_Y = 24;
+    player_y = 24;
+    ollie_y = 24;
     frame = 0;   
   }
 
@@ -706,10 +700,10 @@ void addPlayer(bool white){
     if(CURRENT_LEVEL==2 && GAME_STATE==2){
       xmax = 32;
     }
-    if(PLAYER_X>xmax){
-      PLAYER_X = PLAYER_X-2;
+    if(player_x>xmax){
+      player_x = player_x-2;
     }
-    if(PLAYER_X==xmax){
+    if(player_x==xmax){
       MOVING_LEFT = false;
     }
     if(CURRENT_LEVEL==2){
@@ -725,10 +719,10 @@ void addPlayer(bool white){
     if(CURRENT_LEVEL==2 && GAME_STATE==2){
       xmax = 80;
     }
-    if(PLAYER_X<xmax){
-      PLAYER_X = PLAYER_X+2;
+    if(player_x<xmax){
+      player_x = player_x+2;
     }
-    if(PLAYER_X==xmax){
+    if(player_x==xmax){
       MOVING_RIGHT = false;
     }   
     if(CURRENT_LEVEL==2){
@@ -742,38 +736,38 @@ void addPlayer(bool white){
   if(!white){
     if(CURRENT_LEVEL==2 && GAME_STATE==2){
       if(frame == 0){
-        arduboy.drawSlowXYBitmap(PLAYER_X,PLAYER_Y,the_player_top_f1,16,16,BLACK);
+        arduboy.drawSlowXYBitmap(player_x,player_y,the_player_top_f1,16,16,BLACK);
       } else if(frame == 1){
-        arduboy.drawSlowXYBitmap(PLAYER_X,PLAYER_Y,the_player_top_f2,16,16,BLACK);
+        arduboy.drawSlowXYBitmap(player_x,player_y,the_player_top_f2,16,16,BLACK);
       } else if(frame == 2){
-        arduboy.drawSlowXYBitmap(PLAYER_X,PLAYER_Y,the_player_top_f3,16,16,BLACK);
+        arduboy.drawSlowXYBitmap(player_x,player_y,the_player_top_f3,16,16,BLACK);
       }
     } else {
       if(frame == 0){
-        arduboy.drawBitmap(PLAYER_X,OLLIE_Y,the_player_f1,32,32,BLACK);
+        arduboy.drawBitmap(player_x,ollie_y,the_player_f1,32,32,BLACK);
       } else if(frame == 1){
-        arduboy.drawBitmap(PLAYER_X,OLLIE_Y,the_player_f2,32,32,BLACK);
+        arduboy.drawBitmap(player_x,ollie_y,the_player_f2,32,32,BLACK);
       } else if(frame == 2){
-        arduboy.drawBitmap(PLAYER_X,OLLIE_Y,the_player_f3,32,32,BLACK);
+        arduboy.drawBitmap(player_x,ollie_y,the_player_f3,32,32,BLACK);
       }
     }
     
   } else if(white==true){
     if(CURRENT_LEVEL==2 && GAME_STATE==2){
       if(frame == 0){
-        arduboy.drawSlowXYBitmap(PLAYER_X,PLAYER_Y,the_player_top_f1,16,16,WHITE);
+        arduboy.drawSlowXYBitmap(player_x,player_y,the_player_top_f1,16,16,WHITE);
       } else if(frame == 1){
-        arduboy.drawSlowXYBitmap(PLAYER_X,PLAYER_Y,the_player_top_f2,16,16,WHITE);
+        arduboy.drawSlowXYBitmap(player_x,player_y,the_player_top_f2,16,16,WHITE);
       } else if(frame == 2){
-        arduboy.drawSlowXYBitmap(PLAYER_X,PLAYER_Y,the_player_top_f3,16,16,WHITE);
+        arduboy.drawSlowXYBitmap(player_x,player_y,the_player_top_f3,16,16,WHITE);
       }
     } else {
       if(frame == 0){
-        arduboy.drawBitmap(PLAYER_X,OLLIE_Y,the_player_f1,32,32,WHITE);
+        arduboy.drawBitmap(player_x,ollie_y,the_player_f1,32,32,WHITE);
       } else if(frame == 1){
-        arduboy.drawBitmap(PLAYER_X,OLLIE_Y,the_player_f2,32,32,WHITE);
+        arduboy.drawBitmap(player_x,ollie_y,the_player_f2,32,32,WHITE);
       } else if(frame == 2){
-        arduboy.drawBitmap(PLAYER_X,OLLIE_Y,the_player_f3,32,32,WHITE);
+        arduboy.drawBitmap(player_x,ollie_y,the_player_f3,32,32,WHITE);
       }
     }
   }
@@ -790,15 +784,15 @@ void collision(){
   if(GAME_STATE==2){
     if(CURRENT_LEVEL==1){
       //rock
-      if((PLAYER_X+32) == ROCK_X && (PLAYER_X+32) < (ROCK_X+8)){
-        if((PLAYER_Y+32) >= ROCK_Y){
+      if((player_x+32) == rock_x && (player_x+32) < (rock_x+8)){
+        if((player_y+32) >= rock_y){
           IS_HIT = true;
           delay(60);
           return;
         }
       }
       //spikes
-      if((PLAYER_X+32) == SPIKES_X && (PLAYER_X+32) < (SPIKES_X+24)){
+      if((player_x+32) == spikes_x && (player_x+32) < (spikes_x+24)){
         if(!CROUCHING){
           IS_HIT = true;
           delay(60);
@@ -811,8 +805,8 @@ void collision(){
     if(CURRENT_LEVEL==2){
       //rock
       if(MOVING_DOWN){
-        if( ROCK_Y2 <= (PLAYER_Y+16) && ROCK_Y2 >= PLAYER_Y){
-          if(ROCK_X2 >= PLAYER_X && ROCK_X2 <= (PLAYER_X+16)){
+        if( rock_y2 <= (player_y+16) && rock_y2 >= player_y){
+          if(rock_x2 >= player_x && rock_x2 <= (player_x+16)){
             IS_HIT = true;
             if(arduboy.everyXFrames(10)){
               if(HEARTS>0){
@@ -823,8 +817,8 @@ void collision(){
             return;
           }          
         }
-        if( PILON_Y <= (PLAYER_Y+16) && PILON_Y >= PLAYER_Y){
-          if(PILON_X >= PLAYER_X && PILON_X <= (PLAYER_X+16)){
+        if( pilon_y <= (player_y+16) && pilon_y >= player_y){
+          if(pilon_x >= player_x && pilon_x <= (player_x+16)){
             IS_HIT = true;
             if(arduboy.everyXFrames(10)){
               if(HEARTS>0){
@@ -836,8 +830,8 @@ void collision(){
             return;
           }          
         }
-        if( SPILL_Y <= (PLAYER_Y+16) && SPILL_Y >= PLAYER_Y){
-          if(SPILL_X >= PLAYER_X && SPILL_X <= (PLAYER_X+16)){
+        if( spill_y <= (player_y+16) && spill_y >= player_y){
+          if(spill_x >= player_x && spill_x <= (player_x+16)){
             IS_HIT = true;
             IS_SPILL = true;
             delay(50);
@@ -845,28 +839,24 @@ void collision(){
           }          
         }
         //goodies
-        if( SODA_Y2 <= (PLAYER_Y+16) && SODA_Y2 >= PLAYER_Y){
-          if(SODA_X2 >= PLAYER_X && SODA_X2 <= (PLAYER_X+16)){
-            SODA_Y2 = 360;
+        if( soda_y2 <= (player_y+16) && soda_y2 >= player_y){
+          if(soda_x2 >= player_x && soda_x2 <= (player_x+16)){
+            soda_y2 = 360;
             if(!NEEDS_HEART){
               NEEDS_HEART = true;
-              if(SOUND_ENABLED){
-                soundGood();
-              }
+              soundGood();
               WHICH_PRAISE = random(0,4);
             }
             addToScore();
             return;
           }          
         }
-        if( ONEUP_Y2 <= (PLAYER_Y+16) && ONEUP_Y2 >= PLAYER_Y){
-          if(ONEUP_X2 >= PLAYER_X && ONEUP_X2 <= (PLAYER_X+16)){
-            ONEUP_Y2 = 500;
+        if( oneup_y2 <= (player_y+16) && oneup_y2 >= player_y){
+          if(oneup_x2 >= player_x && oneup_x2 <= (player_x+16)){
+            oneup_y2 = 500;
             if(!NEEDS_LIFE){
               NEEDS_LIFE = true;
-              if(SOUND_ENABLED){
-                soundGood();
-              }
+              soundGood();
               WHICH_PRAISE = random(0,4);
             }
             addToScore();
@@ -886,50 +876,23 @@ void collision(){
    */
   //ball
   if(GAME_STATE==3){
-    if((PLAYER_X+28) == BALL_X && (PLAYER_X+28) < (BALL_X+8)){
-      if((OLLIE_Y+28) >= BALL_Y){
+    if((player_x+28) == ball_x && (player_x+28) < (ball_x+8)){
+      if((ollie_y+28) >= ball_y){
         IS_HIT = true;
-        if(HEARTS>0){
-          HEARTS--;
-        } else {
-          if(LIVES>0){
-            LIVES--;
-            HEARTS = 3;
-            if(SOUND_ENABLED){
-              soundOuch();
-            }
-          } else {
-            GAME_STATE = 5;//game over
-          }
-        }
+        dingHealth();
         delay(50);
         return;
       }
     }
   
     //boss
-    if((PLAYER_X+28) == BOSS_X && (PLAYER_X+28) < (BOSS_X+24)){
-      if((OLLIE_Y+28) >= BOSS_Y){
+    if((player_x+28) == boss_x && (player_x+28) < (boss_x+24)){
+      if((ollie_y+28) >= boss_y){
         BOSS_HIT = true;
-        if(SOUND_ENABLED){
-          soundGood();
-        }
+        soundGood();
         return;
       } else {
-        //take hit
-        if(HEARTS>0){
-          HEARTS--;
-        } else {
-          if(LIVES>0){
-            LIVES--;
-            HEARTS = 3;
-            if(SOUND_ENABLED){
-              soundOuch();
-            }
-          } else {
-            GAME_STATE = 5;//game over
-          }
-        }
+        dingHealth();
       }
     }
   }
@@ -940,14 +903,12 @@ void collision(){
    */
   //one ups  
   if(CURRENT_LEVEL == 1 && arduboy.everyXFrames(2)){
-    if( (PLAYER_X+36) >= ONEUP_X && PLAYER_X <= (ONEUP_X+8)){
-      if(OLLIE_Y <= ONEUP_Y){
-        ONEUP_Y = 64;
+    if( (player_x+36) >= oneup_x && player_x <= (oneup_x+8)){
+      if(ollie_y <= oneup_y){
+        oneup_y = 64;
         if(!NEEDS_LIFE){
           NEEDS_LIFE = true;
-          if(SOUND_ENABLED){
-            soundGood();
-          }
+          soundGood();
           WHICH_PRAISE = 6;
         }
         addToScore();
@@ -956,14 +917,12 @@ void collision(){
     }
   
     //sodas 
-    if( (PLAYER_X+36) >= SODA_X && PLAYER_X <= (SODA_X+8)){
-      if(OLLIE_Y <= SODA_Y){
-        SODA_Y = 64;
+    if( (player_x+36) >= soda_x && player_x <= (soda_x+8)){
+      if(ollie_y <= soda_y){
+        soda_y = 64;
         if(!NEEDS_HEART){
           NEEDS_HEART = true;
-          if(SOUND_ENABLED){
-            soundGood();
-          }
+          soundGood();
           WHICH_PRAISE = 5;
         }
         addToScore();
@@ -1023,146 +982,142 @@ void addItems(){
  //rocks
 void doRocks(){
   if(MOVING){
-    if(ROCK_X == -8){
-      ROCK_X = random(128,360);
+    if(rock_x == -8){
+      rock_x = random(128,360);
     }
-    ROCK_X--;
+    rock_x--;
   }    
-  arduboy.drawSlowXYBitmap(ROCK_X,ROCK_Y,the_rock,8,8,BLACK);
+  arduboy.drawSlowXYBitmap(rock_x,rock_y,the_rock,8,8,BLACK);
   return;
 }
 //rails
 void doRails(){
   if(MOVING){
-    if(RAIL_X == -48){
-      RAIL_X = random(400,900);
+    if(rail_x == -48){
+      rail_x = random(400,900);
     }
-    RAIL_X--;
+    rail_x--;
   }
-  arduboy.drawBitmap(RAIL_X,RAIL_Y,the_rail,48,8,BLACK);
+  arduboy.drawBitmap(rail_x,rail_y,the_rail,48,8,BLACK);
   return;
 }
 //benches
 void doBenches(){
   if(MOVING){
-    if(BENCH_X == -16){
-     BENCH_X = random(200,600);
+    if(bench_x == -16){
+     bench_x = random(200,600);
     }
-    BENCH_X--;
+    bench_x--;
   }
-  arduboy.drawBitmap(BENCH_X,BENCH_Y,the_bench,16,8,BLACK);
+  arduboy.drawBitmap(bench_x,bench_y,the_bench,16,8,BLACK);
   return;
 }
 //trashcans
 void doTrashcans(){
   if(MOVING && arduboy.everyXFrames(3) ){
-    if(TRASHCAN_X == -16){
-      TRASHCAN_X = random(500,800);
+    if(trashcan_x == -16){
+      trashcan_x = random(500,800);
     }
-    TRASHCAN_X--;
+    trashcan_x--;
   }    
-  arduboy.drawBitmap(TRASHCAN_X,TRASHCAN_Y,the_trashcan,16,16,BLACK);
+  arduboy.drawBitmap(trashcan_x,trashcan_y,the_trashcan,16,16,BLACK);
   return;
 }
 //spikes
 void doSpikes(){
   if(MOVING){
-    if(SPIKES_X == -16){
-      SPIKES_X = 600;
+    if(spikes_x == -16){
+      spikes_x = 600;
     }
-    SPIKES_X--;
+    spikes_x--;
   }    
-  arduboy.drawSlowXYBitmap(SPIKES_X,SPIKES_Y,the_three_spikes,24,8,BLACK);
+  arduboy.drawSlowXYBitmap(spikes_x,spikes_y,the_three_spikes,24,8,BLACK);
   return;
 }
 
 //level 2 rocks
 void doLevel2Rocks(){
   if(MOVING_DOWN){
-    if(ROCK_Y2 <= -8){
-      ROCK_Y2 = random(70,150);
-      ROCK_X2 = random(26,85);
+    if(rock_y2 <= -8){
+      rock_y2 = random(70,150);
+      rock_x2 = random(26,85);
     }
-    ROCK_Y2--;
+    rock_y2--;
   }    
-  arduboy.drawSlowXYBitmap(ROCK_X2,ROCK_Y2,the_rock,8,8,BLACK); 
+  arduboy.drawSlowXYBitmap(rock_x2,rock_y2,the_rock,8,8,BLACK); 
   return;
 }
 //level 2 pilons
 void doLevel2Pilons(){
   if(MOVING_DOWN){
-    if(PILON_Y <= -8){
-      PILON_Y = random(70,150);
-      PILON_X = random(26,85);
+    if(pilon_y <= -8){
+      pilon_y = random(70,150);
+      pilon_x = random(26,85);
     }
-    PILON_Y--;
+    pilon_y--;
   }    
-  arduboy.drawSlowXYBitmap(PILON_X,PILON_Y,the_pilon,8,8,BLACK); 
+  arduboy.drawSlowXYBitmap(pilon_x,pilon_y,the_pilon,8,8,BLACK); 
   return;
 }
 //level 2 spills
 void doLevel2Spills(){
   if(MOVING_DOWN){
-    if(SPILL_Y <= -8){
-      SPILL_Y = random(70,150);
-      SPILL_X = random(30,70);
+    if(spill_y <= -8){
+      spill_y = random(70,150);
+      spill_x = random(30,70);
     }
-    SPILL_Y--;
+    spill_y--;
   }    
-  arduboy.drawSlowXYBitmap(SPILL_X,SPILL_Y,the_spill,16,16,BLACK); 
+  arduboy.drawSlowXYBitmap(spill_x,spill_y,the_spill,16,16,BLACK); 
   return;
 }
 
 //one ups
 void doOneUps(){
   if( arduboy.everyXFrames(2) ){
-    if(ONEUP_X == -16){
-      ONEUP_X = random(600,1000);
-      ONEUP_Y = random(12,24);
+    if(oneup_x == -16){
+      oneup_x = random(600,1000);
+      oneup_y = random(12,24);
     }
-    ONEUP_X--;
+    oneup_x--;
   }    
-  arduboy.drawBitmap(ONEUP_X,ONEUP_Y,the_one_up,8,8,BLACK);
+  arduboy.drawBitmap(oneup_x,oneup_y,the_one_up,8,8,BLACK);
   return;
 }
 //level 2 one ups
 void doLevel2OneUps(){
   if(MOVING_DOWN){
     if( arduboy.everyXFrames(2) ){
-      if(ONEUP_Y2 <= -8){
-        ONEUP_Y2 = random(64,100);
-        ONEUP_X2 = random(30,70);
+      if(oneup_y2 <= -8){
+        oneup_y2 = random(64,100);
+        oneup_x2 = random(30,70);
       }
-      ONEUP_Y2--;
+      oneup_y2--;
     }
   }    
-  arduboy.drawBitmap(ONEUP_X2,ONEUP_Y2,the_one_up,8,8,BLACK); 
+  arduboy.drawBitmap(oneup_x2,oneup_y2,the_one_up,8,8,BLACK); 
   return;
 }
 //sodas
 void doSodas(){
-//  if( arduboy.everyXFrames(1) ){
-    if(SODA_X == -16){
-      SODA_X = random(200,400);
-      SODA_Y = random(12,20);
-    }
-    SODA_X--;
-//  }    
-  arduboy.drawSlowXYBitmap(SODA_X,SODA_Y,the_soda,8,8,BLACK);
+  if(soda_x == -16){
+    soda_x = random(200,400);
+    soda_y = random(12,20);
+  }
+  soda_x--;
+  arduboy.drawSlowXYBitmap(soda_x,soda_y,the_soda,8,8,BLACK);
   return;
 }
 //level 2 sodas
 void doLevel2Sodas(){
   if(MOVING_DOWN){
-//    if( arduboy.everyXFrames(1) ){
-      if(SODA_Y2 <= -8){
-        SODA_Y2 = random(70,150);
-        SODA_X2 = random(30,70);
-      }
-      SODA_Y2--;
-//    }
+    if(soda_y2 <= -8){
+      soda_y2 = random(70,150);
+      soda_x2 = random(30,70);
+    }
+    soda_y2--;
   }    
-  arduboy.drawSlowXYBitmap(SODA_X2,SODA_Y2,the_soda,8,8,BLACK); 
+  arduboy.drawSlowXYBitmap(soda_x2,soda_y2,the_soda,8,8,BLACK); 
   return;
 }
 
@@ -1176,62 +1131,62 @@ void doBosses(){
       }
       //platform
       if(CURRENT_LEVEL==2 && arduboy.everyXFrames(4) ){
-        if(PLATFORM_X == 2){
+        if(platform_x == 2){
           PLATFORM_OVER = true;
         }
-        if(PLATFORM_X == 86){
+        if(platform_x == 86){
           PLATFORM_OVER = false;
         }
-        if(PLATFORM_X>2 && !PLATFORM_OVER){
-          PLATFORM_X--;
+        if(platform_x>2 && !PLATFORM_OVER){
+          platform_x--;
         }        
-        if(PLATFORM_X < 86 && PLATFORM_OVER){
-          PLATFORM_X++;
+        if(platform_x < 86 && PLATFORM_OVER){
+          platform_x++;
         }
       }
-      arduboy.drawSlowXYBitmap(PLATFORM_X,PLATFORM_Y,the_platform,32,8,WHITE);
+      arduboy.drawSlowXYBitmap(platform_x,platform_y,the_platform,32,8,WHITE);
       //boss
-      if(BOSS_Y==8){
+      if(boss_y==8){
         BOSS_DOWN = false;
-        BOSS_Y++;
+        boss_y++;
       }
-      if(BOSS_Y==36){
+      if(boss_y==36){
         BOSS_DOWN = true;
         if(!BOSS_FIRED){
           BOSS_FIRED = true;
         }
       }
       if(!BOSS_DOWN){
-        BOSS_Y++;
+        boss_y++;
       }
       if(BOSS_DOWN){
-        BOSS_Y--;      
+        boss_y--;      
       }
 
       if(BOSS_FIRED){
-        if(BALL_X>-8){
-          BALL_X--;
+        if(ball_x>-8){
+          ball_x--;
           if(CURRENT_LEVEL==2){
-            BALL_Y = BOSS_Y;
+            ball_y = boss_y;
           }          
         } else {
           BOSS_FIRED = false;
-          BALL_X = BOSS_X+8;
+          ball_x = boss_x+8;
         }
-        arduboy.drawBitmap(BALL_X,BALL_Y,the_ball,8,8,WHITE);     
+        arduboy.drawBitmap(ball_x,ball_y,the_ball,8,8,WHITE);     
       }
       int bossframe = 0;
       if(BOSS_HIT){
         bossframe = 1;
       }
       if(CURRENT_LEVEL==2 && arduboy.everyXFrames(120)){
-        BOSS_X = random(12,96);     
+        boss_x = random(12,96);     
       }
-      sprites.draw(BOSS_X,BOSS_Y,the_boss1_f1,bossframe,the_boss1_f1_mask,bossframe);
+      sprites.draw(boss_x,boss_y,the_boss1_f1,bossframe,the_boss1_f1_mask,bossframe);
       if(arduboy.everyXFrames(30)){
         if(BOSS_HIT){
-          if(BOSS_HEALTH>0){
-            BOSS_HEALTH--;
+          if(boss_health>0){
+            boss_health--;
           } else {
             //win! next level
             GAME_STATE = 4;
@@ -1259,10 +1214,10 @@ void doBosses(){
  */
 void checkSecsPlayed(){
   if(LEVEL_LENGTH-SECS_PLAYED<5){
-    if(ONEUP_X>128 || ONEUP_X<0){
-      ONEUP_X = 90;
+    if(oneup_x>128 || oneup_x<0){
+      oneup_x = 90;
     }
-    if(SOUND_ENABLED && arduboy.everyXFrames(6)){
+    if(arduboy.everyXFrames(6)){
       soundGetReady();
     }    
     trace("GET READY!");
@@ -1303,22 +1258,7 @@ void addToScore(){
 void timedDeath(){
   if(GAME_STATE == 2){
     if(arduboy.everyXFrames(DING_EVERY_X_FRAMES)){
-      //ding the health
-      if(HEARTS > 0){
-        HEARTS--;
-      }
-      if(HEARTS == 0){
-        if(LIVES == 0){
-          //game over
-          GAME_STATE = 5;
-        } else {
-          LIVES--;
-          HEARTS = 3;
-          if(SOUND_ENABLED){
-            soundOuch();
-          }
-        }
-      }
+      dingHealth();
     }
     //add to seconds played
     if(arduboy.everyXFrames(60)){
@@ -1326,6 +1266,26 @@ void timedDeath(){
     }
   }
 }
+
+
+/*
+ * ding health
+ */
+ void dingHealth(){
+  if(HEARTS > 0){
+    HEARTS--;
+  }
+  if(HEARTS == 0){
+    if(LIVES == 0){
+      //game over
+      GAME_STATE = 5;
+    } else {
+      LIVES--;
+      HEARTS = 3;
+      soundOuch();
+    }
+  }
+ }
 
 
 
@@ -1336,17 +1296,17 @@ void bossTime(){
   }else{
     BOSS_TIME = false;
     //get goodies off the screen for boss fight
-    TRASHCAN_X = random(90,126);
-    BENCH_X = random(128,256);
-    RAIL_X = random(300,400);
-    ROCK_X = random(300,500);
-    SPIKES_X = random(600,900);
-    ONEUP_X = random(600,800);
-    SODA_X = random(400,600);
+    trashcan_x = random(90,126);
+    bench_x = random(128,256);
+    rail_x = random(300,400);
+    rock_x = random(300,500);
+    spikes_x = random(600,900);
+    oneup_x = random(600,800);
+    soda_x = random(400,600);
     
     OLLYING = true;
-    OLLIE_Y = -16;       
-    PLAYER_X = 8;
+    ollie_y = -16;       
+    player_x = 8;
     GAME_STATE = 3;         
   } 
   return;
@@ -1356,7 +1316,7 @@ void bossTime(){
 void resetGame(){
   HEARTS = 3;
   LIVES = 3;
-  BOSS_HEALTH = 9;
+  boss_health = 9;
   BOSS_HIT = false;
   BOSS_DOWN = false;
   BOSS_FIRED = false;
@@ -1364,26 +1324,26 @@ void resetGame(){
   SCORE = 0;
   OLLYING = false;
   CROUCHING = false;
-  PLAYER_X = 24;
-  PLAYER_Y = 40;
-  OLLIE_Y = 8;
-  TRASHCAN_X = random(90,126);
-  BENCH_X = random(128,256);
-  RAIL_X = random(300,400);
-  ROCK_X = random(300,500);
-  SPIKES_X = random(600,900);
-  ROCK_X2 = random(24,86);
-  ROCK_Y2 = random(70,200);
-  PILON_X = random(24,86);
-  PILON_Y = random(70,200);
-  SPILL_X = random(28,75);
-  SPILL_Y = random(70,200);
-  ONEUP_X = random(600,800);
-  SODA_X = random(400,600);
-  ONEUP_X2 = random(24,86);
-  ONEUP_Y2 = random(180,360);
-  SODA_X2 = random(24,86);
-  SODA_Y2 = random(120,200);
+  player_x = 24;
+  player_y = 40;
+  ollie_y = 8;
+  trashcan_x = random(90,126);
+  bench_x = random(128,256);
+  rail_x = random(300,400);
+  rock_x = random(300,500);
+  spikes_x = random(600,900);
+  rock_x2 = random(24,86);
+  rock_y2 = random(70,200);
+  pilon_x = random(24,86);
+  pilon_y = random(70,200);
+  spill_x = random(28,75);
+  spill_y = random(70,200);
+  oneup_x = random(600,800);
+  soda_x = random(400,600);
+  oneup_x2 = random(24,86);
+  oneup_y2 = random(180,360);
+  soda_x2 = random(24,86);
+  soda_y2 = random(120,200);
   SECS_PLAYED = 0;
   BG_SCROLL = 0;
   //game
