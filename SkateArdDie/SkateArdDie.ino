@@ -121,6 +121,7 @@ void setup() {
   arduboy.systemButtons();
   arduboy.audio.begin();
   arduboy.setFrameRate(60); 
+  arduboy.initRandomSeed();
   resetGame();
 }
 
