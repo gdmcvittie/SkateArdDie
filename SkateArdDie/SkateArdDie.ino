@@ -6,12 +6,11 @@
  */
 #include <Arduboy2.h>
 #include <ArduboyTones.h>
-#include "sprites.h"
 #include "bitmaps.h"
 
 Arduboy2 arduboy;
 ArduboyTones sound(arduboy.audio.enabled);
-Sprites sprites(arduboy.getBuffer());
+Sprites sprites;
 
 /*
  * game variables
@@ -1186,7 +1185,7 @@ void doBosses(){
       if(CURRENT_LEVEL==2 && arduboy.everyXFrames(120)){
         boss_x = random(12,96);     
       }
-      sprites.draw(boss_x,boss_y,the_boss1_f1,bossframe,the_boss1_f1_mask,bossframe);
+      sprites.drawExternalMask(boss_x,boss_y,the_boss1_f1,the_boss1_f1_mask,bossframe,bossframe);
       if(arduboy.everyXFrames(30)){
         if(BOSS_HIT){
           if(boss_health>0){
